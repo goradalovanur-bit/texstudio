@@ -1,0 +1,2 @@
+# texstudio
+latex compiler 
