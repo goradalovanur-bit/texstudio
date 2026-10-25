@@ -183,11 +183,11 @@ async function boot(){
  try{await xe.loadEngine();await dv.loadEngine()}catch(e){xe=dv=null;throw new Error('Mühərrik yüklənmədi')}
 }
 async function compile(){
- if(busy)return;busy=1;$('#go').disabled=true;
+ if(busy)return;busy=1;$('#go').disabled=true;lastLog='';
  if(S.m=='edit')mode('split');
  try{
   await boot();
-  xe.setTexliveEndpoint(S.ep);dv.setTexliveEndpoint(S.ep);
+  [xe,dv].forEach(e=>e.latexWorker.postMessage({cmd:'settexliveurl',url:S.ep}));
   xe.flushCache();
   const fb=await fonts(),dirs=new Set();
   const put=(n,d,both)=>{const p=n.split('/');p.pop();let a='';p.forEach(x=>{a+=(a?'/':'')+x;if(!dirs.has(a)){dirs.add(a);xe.makeMemFSFolder(a);dv.makeMemFSFolder(a)}});xe.writeMemFSFile(n,d);if(both)dv.writeMemFSFile(n,d)};
@@ -211,7 +211,7 @@ async function compile(){
   pdfBytes=new Uint8Array(p.pdf);await showPdf(pdfBytes);
   const w=(lastLog.match(/Warning/g)||[]).length;
   status('✓ Hazırdır'+(w?' · '+w+' xəbərdarlıq':''));
- }catch(e){status('✗ '+(e&&e.message||'Xəta'),1);lastLog+='\n'+(e&&e.message||e)}
+ }catch(e){status('✗ '+(e&&e.message||'Xəta'),1);lastLog+='\n'+(e&&e.message||e);try{xe&&xe.closeWorker();dv&&dv.closeWorker()}catch(_){}xe=dv=null}
  finally{busy=0;$('#go').disabled=false}
 }
 async function showPdf(u8){
