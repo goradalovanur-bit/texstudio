@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="az"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>TeX Studio</title>
+<style>
+:root{--bg:#f6f8fb;--sf:#fff;--tx:#1a2230;--mt:#64748b;--bd:#d8dee8;--ac:#2563eb;--pv:#dfe4ec;--ed:#fff;--k:#1d4ed8;--c:#7b8794;--m:#0f766e;--b:#b45309;--er:#d93025}
+@media(prefers-color-scheme:dark){:root{--bg:#0f141b;--sf:#171d27;--tx:#e6ebf2;--mt:#94a3b8;--bd:#2a3342;--ac:#4f8cff;--pv:#0b0f15;--ed:#12171f;--k:#7aa7ff;--c:#6b7686;--m:#5eead4;--b:#fbbf24;--er:#ff6b5e;color-scheme:dark}}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);box-sizing:border-box}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+header{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--sf);border-bottom:1px solid var(--bd)}
+.logo{font-weight:700;white-space:nowrap}.logo b{color:var(--ac)}
+#go{margin-left:auto;background:var(--ac);color:#fff;padding:8px 14px;border-radius:10px;font-weight:600}
+#go:disabled{opacity:.6}
+.seg{display:flex;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:2px}
+.seg button{padding:6px 9px;border-radius:8px;font-size:13px;color:var(--mt)}.seg button.on{background:color-mix(in srgb,var(--ac) 18%,transparent);color:var(--tx);font-weight:600}
+.ib{min-width:34px;height:34px;border-radius:9px;font-size:17px;color:var(--mt)}
+.tabs{display:flex;gap:6px;align-items:center;padding:6px 10px;background:var(--sf);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
+.tab{padding:6px 12px;border-radius:8px;border:1px solid var(--bd);white-space:nowrap;font-size:13px;color:var(--mt)}
+.tab.on{background:color-mix(in srgb,var(--ac) 14%,transparent);border-color:var(--ac);color:var(--tx);font-weight:600}
+.tabs .ib{flex:none;border:1px dashed var(--bd);height:30px}
+main{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+#pdf{flex:1;min-height:0;overflow:auto;background:var(--pv);padding:8px;text-align:center}
+#pdf canvas{background:#fff;box-shadow:0 1px 8px #0003;margin:0 0 8px;max-width:100%}
+#pdf .hint{color:var(--mt);padding:40px 20px;line-height:1.6}
+.ed{position:relative;flex:1;min-height:0;background:var(--ed);overflow:hidden;border-top:1px solid var(--bd)}
+.ed pre,.ed textarea{position:absolute;top:0;left:0;width:100%;height:100%;margin:0;padding:12px 14px;border:0;box-sizing:border-box;font:16px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:2}
+.ed pre{pointer-events:none;overflow:hidden}
+.ed textarea{background:transparent;color:transparent;-webkit-text-fill-color:transparent;caret-color:var(--tx);resize:none;outline:0;overflow:auto;scrollbar-width:none}
+.ed textarea::-webkit-scrollbar{display:none}
+.ed i{font-style:normal}.k{color:var(--k)}.c{color:var(--c)}.m{color:var(--m)}.b{color:var(--b)}
+#sym{display:flex;gap:6px;padding:6px 8px;background:var(--sf);border-top:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
+#sym button{flex:none;min-width:38px;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font:14px ui-monospace,Menlo,monospace;background:var(--bg)}
+#sb{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--sf);border-top:1px solid var(--bd);font-size:13px;color:var(--mt)}
+#sb span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#sb.er span{color:var(--er)}
+#sb button{color:var(--ac);padding:2px 6px}
+[data-m="edit"] #pdf,[data-m="prev"] .ed,[data-m="prev"] #sym{display:none}
+.sheet{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;justify-content:center;z-index:50}
+.sheet.o{display:flex}
+.box{background:var(--sf);border-radius:16px 16px 0 0;padding:16px;width:100%;max-width:560px;box-sizing:border-box;max-height:80vh;overflow:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.box h3{margin:0 0 10px;font-size:16px}
+.box label{display:block;font-size:13px;color:var(--mt);margin:12px 0 4px}
+.box input[type=text],.box select{width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:16px ui-monospace,Menlo,monospace}
+.row{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;flex-wrap:wrap}
+.row button{padding:9px 14px;border-radius:8px;border:1px solid var(--bd)}.row .p{background:var(--ac);color:#fff;border-color:var(--ac)}.row .d{color:var(--er);margin-right:auto}
+#lgt{font:12px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}#lgt b{color:var(--er)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111d;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+</style></head>
+<body>
+<header><span class="logo">TeX<b>Studio</b></span>
+<div class="seg" id="seg"><button data-m="edit">Kod</button><button data-m="split">İkili</button><button data-m="prev">PDF</button></div>
+<button id="go">▶ Kompilyasiya</button><button class="ib" id="cfg" title="Ayarlar">⚙</button></header>
+<div class="tabs" id="tabs"></div>
+<main id="app" data-m="split">
+<div id="pdf"><div class="hint">PDF burada görünəcək.<br>İlk kompilyasiya paketləri internetdən yükləyir və uzun çəkə bilər, sonrakılar sürətlidir.</div></div>
+<div class="ed"><pre id="hl"></pre><textarea id="ta" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off"></textarea></div>
+<div id="sym"></div>
+<div id="sb"><span id="st">Hazırdır</span><button id="lgb">Jurnal</button><button id="dl">PDF ⬇</button></div>
+</main>
+<div class="sheet" id="sh"><div class="box" id="bx"></div></div>
+<div id="toast"></div>
+<input type="file" id="fi" multiple hidden>
+<script src="pdf.min.js"></script><script src="XeTeXEngine.js"></script><script src="DvipdfmxEngine.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const MAIN=String.raw`\documentclass[12pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\title{Nümunə Sənəd}
+\author{TeX Studio}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Giriş}
+Əyrilik və burulma. Gürcü mətni: ქართული ტექსტი, დიფერენციალური გეომეტრია.
+
+\input{bolme1}
+
+\section{Riyaziyyat}
+\[ \tau=\frac{(\alpha'\times\alpha'')\cdot\alpha'''}{\|\alpha'\times\alpha''\|^{2}} \]
+
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,0) -- (2,0) node[right]{$x$};
+\draw[->] (0,0) -- (0,2) node[above]{$y$};
+\draw[thick,blue] (0,0) .. controls (1,2) and (2,1) .. (2,2);
+\end{tikzpicture}
+\end{center}
+
+\end{document}
+`;
+const B1=String.raw`\subsection{Siyahı}
+\begin{itemize}
+  \item Birinci maddə
+  \item ორმაგი ბუნება: $e^{i\pi}+1=0$
+\end{itemize}
+`;
+let S={files:[{n:'main.tex',t:MAIN},{n:'bolme1.tex',t:B1}],a:0,m:'split',ep:'https://texlive2.swiftlatex.com/',passes:2,compat:true};
+const db=new Promise((ok,no)=>{try{const r=indexedDB.open('texstudio',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=()=>no()}catch(e){no()}});
+const idbGet=k=>db.then(d=>new Promise(r=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>r()}),()=>{});
+const idbSet=(k,v)=>db.then(d=>new Promise(r=>{const t=d.transaction('k','readwrite');t.objectStore('k').put(v,k);t.oncomplete=r;t.onerror=r}),()=>{});
+let sv;const save=()=>{clearTimeout(sv);sv=setTimeout(()=>idbSet('S',S),400)};
+const ta=$('#ta'),hl=$('#hl'),cur=()=>S.files[S.a];
+function toast(t){const e=$('#toast');e.textContent=t;e.style.opacity=1;setTimeout(()=>e.style.opacity=0,1600)}
+function status(t,er){$('#st').textContent=t;$('#sb').className=er?'er':''}
+
+function hlu(){
+ const h=esc(ta.value).replace(/(%.*)|(\\[a-zA-Z@]+\*?|\\.)|(\$(?:\\.|[^$\\\n])*\$)|([{}\[\]])/g,(m,c,k,mt)=>'<i class="'+(c?'c':k?'k':mt?'m':'b')+'">'+m+'</i>');
+ hl.innerHTML=h+'\n ';hl.scrollTop=ta.scrollTop;
+}
+ta.addEventListener('scroll',()=>{hl.scrollTop=ta.scrollTop});
+ta.addEventListener('input',()=>{const f=cur();if(f.b)return;f.t=ta.value;hlu();save()});
+
+function tabs(){
+ $('#tabs').innerHTML=S.files.map((f,i)=>'<button class="tab'+(i==S.a?' on':'')+'" data-i="'+i+'">'+esc(f.n)+'</button>').join('')+'<button class="ib" id="more">⋯</button><button class="ib" id="add">＋</button><button class="ib" id="imp" title="Fayl idxal et">⇪</button>';
+}
+function open(i){
+ S.a=i;const f=cur();
+ if(f.b){ta.value='% İkili fayl: '+f.n+' ('+Math.round(f.b.byteLength/1024)+' KB)';ta.readOnly=true}else{ta.value=f.t;ta.readOnly=false}
+ ta.scrollTop=0;tabs();hlu();save();
+}
+function sheet(h){$('#bx').innerHTML=h;$('#sh').classList.add('o')}
+const closeSheet=()=>$('#sh').classList.remove('o');
+$('#sh').addEventListener('click',e=>{if(e.target.id=='sh')closeSheet()});
+function ask(t,v,ok,fn,del){
+ sheet('<h3>'+esc(t)+'</h3><input type="text" id="qi" autocapitalize="off" autocorrect="off" spellcheck="false"><div class="row">'+(del?'<button class="d" id="qd">Sil</button>':'')+'<button id="qc">Ləğv</button><button class="p" id="qk">'+ok+'</button></div>');
+ const i=$('#qi');i.value=v;setTimeout(()=>i.focus(),60);
+ $('#qc').onclick=closeSheet;$('#qk').onclick=()=>{closeSheet();fn(i.value)};if(del)$('#qd').onclick=()=>{closeSheet();del()};
+ i.onkeydown=e=>{if(e.key=='Enter'){closeSheet();fn(i.value)}};
+}
+$('#tabs').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.i!=null)return open(+b.dataset.i);
+ if(b.id=='imp')return $('#fi').click();
+ if(b.id=='add')ask('Yeni fayl (məs. bolme2.tex)','','Yarat',v=>{v=v.trim();if(!v)return;if(!/\.\w+$/.test(v))v+='.tex';if(S.files.some(f=>f.n==v))return toast('Bu ad var');S.files.push({n:v,t:''});open(S.files.length-1)});
+ if(b.id=='more'){const f=cur();ask('Fayl: '+f.n,f.n,'Adı dəyiş',v=>{v=v.trim();if(!v||v==f.n)return;if(S.files.some(x=>x.n==v))return toast('Bu ad var');f.n=v;tabs();save()},f.n=='main.tex'?null:()=>{S.files.splice(S.a,1);open(0)})}
+});
+$('#fi').onchange=async e=>{
+ for(const fl of e.target.files){
+  const txt=/\.(tex|bib|sty|cls|txt|cfg|def|bst)$/i.test(fl.name);
+  const f=txt?{n:fl.name,t:await fl.text()}:{n:fl.name,b:await fl.arrayBuffer()};
+  const i=S.files.findIndex(x=>x.n==fl.name);if(i>=0)S.files[i]=f;else S.files.push(f);
+ }
+ e.target.value='';open(S.a);toast('İdxal edildi');
+};
+
+/* --- simvollar paneli --- */
+const SYM=[['\\','\\'],['{ }','{‸}'],['$','$‸$'],['§','\\section{‸}'],['B','\\textbf{‸}'],['I','\\textit{‸}'],['\\input','\\input{‸}'],['frac','\\frac{‸}{}'],['√','\\sqrt{‸}'],['Σ','\\sum_{i=1}^{n}‸'],['∫','\\int_{a}^{b}‸\\,dx'],['α','\\alpha'],['β','\\beta'],['κ','\\kappa'],['τ','\\tau'],['∂','\\partial '],['≤','\\leq '],['×','\\times '],['x²','^{‸}'],['xᵢ','_{‸}'],['[ ]','\\[\n‸\n\\]'],['eq','\\begin{equation}\n‸\n\\end{equation}'],['•','\\begin{itemize}\n  \\item ‸\n\\end{itemize}'],['1.','\\begin{enumerate}\n  \\item ‸\n\\end{enumerate}'],['thm','\\begin{theorem}\n‸\n\\end{theorem}']];
+$('#sym').innerHTML=SYM.map((s,i)=>'<button data-i="'+i+'">'+esc(s[0])+'</button>').join('');
+$('#sym').addEventListener('pointerdown',e=>e.preventDefault());
+$('#sym').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b||ta.readOnly)return;
+ const t=SYM[+b.dataset.i][1],i=t.indexOf('‸'),x=t.replace('‸','');ta.focus();
+ if(!document.execCommand('insertText',false,x)){ta.setRangeText(x,ta.selectionStart,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'))}
+ if(i>=0){const p=ta.selectionStart-x.length+i;ta.setSelectionRange(p,p)}
+});
+function mode(m){S.m=m;$('#app').dataset.m=m;document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.m==m));save()}
+$('#seg').addEventListener('click',e=>{const b=e.target.closest('button');if(b)mode(b.dataset.m)});
+
+/* --- kompilyasiya --- */
+const FN=['DejaVuSerif','DejaVuSerif-Bold','DejaVuSerif-Italic','DejaVuSerif-BoldItalic'];
+let FB;async function fonts(){if(!FB)FB=await Promise.all(FN.map(async n=>[n+'.ttf',new Uint8Array(await (await fetch(n+'.ttf')).arrayBuffer())]));return FB}
+function pre(t){
+ if(!S.compat)return t;
+ return t.replace(/\\setmainfont\{DejaVu ?Serif\}(\[[^\]]*\])?/g,'\\setmainfont{DejaVuSerif.ttf}[BoldFont=DejaVuSerif-Bold.ttf,ItalicFont=DejaVuSerif-Italic.ttf,BoldItalicFont=DejaVuSerif-BoldItalic.ttf]')
+  .replace(/\\usepackage\{newcomputermodern\}/g,'')
+  .replace(/\\usepackage\[azerbaijani\]\{babel\}/g,'')
+  .replace(/\\addto\\captionsazerbaijani\{/g,'\\AtBeginDocument{');
+}
+let xe,dv,busy=0,pdfBytes,lastLog='';
+async function boot(){
+ if(xe)return;
+ status('Mühərrik yüklənir…');
+ xe=new XeTeXEngine();dv=new DvipdfmxEngine();
+ try{await xe.loadEngine();await dv.loadEngine()}catch(e){xe=dv=null;throw new Error('Mühərrik yüklənmədi')}
+}
+async function compile(){
+ if(busy)return;busy=1;$('#go').disabled=true;
+ if(S.m=='edit')mode('split');
+ try{
+  await boot();
+  xe.setTexliveEndpoint(S.ep);dv.setTexliveEndpoint(S.ep);
+  xe.flushCache();
+  const fb=await fonts(),dirs=new Set();
+  const put=(n,d,both)=>{const p=n.split('/');p.pop();let a='';p.forEach(x=>{a+=(a?'/':'')+x;if(!dirs.has(a)){dirs.add(a);xe.makeMemFSFolder(a);dv.makeMemFSFolder(a)}});xe.writeMemFSFile(n,d);if(both)dv.writeMemFSFile(n,d)};
+  S.files.forEach(f=>f.b?put(f.n,new Uint8Array(f.b.slice(0)),1):put(f.n,pre(f.t),0));
+  fb.forEach(([n,d])=>put(n,d,1));
+  xe.setEngineMainFile('main.tex');
+  let r;
+  for(let i=1;i<=S.passes;i++){
+   status('Kompilyasiya '+i+'/'+S.passes+' (ilk dəfə uzun çəkə bilər)…');
+   r=await xe.compileLaTeX();lastLog=r.log||'';
+   if(r.status!==0)break;
+  }
+  if(r.status!==0||!r.pdf){
+   const m=lastLog.match(/^! (.*)$/m),l=lastLog.match(/^l\.(\d+)/m);
+   status('✗ Xəta'+(m?': '+m[1]:'')+(l?' (sətir '+l[1]+')':''),1);showLog();return;
+  }
+  status('PDF yaradılır…');
+  dv.writeMemFSFile('main.xdv',r.pdf);dv.setEngineMainFile('main.xdv');
+  const p=await dv.compilePDF();
+  if(!p.pdf){status('✗ PDF yaradıla bilmədi',1);lastLog+='\n'+(p.log||'');showLog();return}
+  pdfBytes=new Uint8Array(p.pdf);await showPdf(pdfBytes);
+  const w=(lastLog.match(/Warning/g)||[]).length;
+  status('✓ Hazırdır'+(w?' · '+w+' xəbərdarlıq':''));
+ }catch(e){status('✗ '+(e&&e.message||'Xəta'),1);lastLog+='\n'+(e&&e.message||e)}
+ finally{busy=0;$('#go').disabled=false}
+}
+async function showPdf(u8){
+ const box=$('#pdf'),keep=box.scrollTop;
+ pdfjsLib.GlobalWorkerOptions.workerSrc='pdf.worker.min.js';
+ const doc=await pdfjsLib.getDocument({data:u8.slice()}).promise;
+ const w=Math.max(200,box.clientWidth-16),p1=await doc.getPage(1),v1=p1.getViewport({scale:1}),ratio=v1.height/v1.width;
+ box.innerHTML='';
+ const io=new IntersectionObserver(es=>es.forEach(async e=>{
+  const c=e.target;if(!e.isIntersecting||c.dataset.d)return;c.dataset.d=1;
+  const pg=await doc.getPage(+c.dataset.p),vp=pg.getViewport({scale:w/pg.getViewport({scale:1}).width*(devicePixelRatio||1)});
+  c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+ }),{root:box,rootMargin:'800px'});
+ for(let i=1;i<=doc.numPages;i++){const c=document.createElement('canvas');c.dataset.p=i;c.style.width=w+'px';c.style.height=(w*ratio)+'px';box.appendChild(c);io.observe(c)}
+ box.scrollTop=keep;
+}
+function showLog(){
+ sheet('<h3>Kompilyasiya jurnalı</h3><pre id="lgt">'+esc(lastLog).replace(/^(!.*)$/gm,'<b>$1</b>')+'</pre><div class="row"><button class="p" id="lx">Bağla</button></div>');
+ $('#lx').onclick=closeSheet;
+}
+$('#go').onclick=compile;$('#lgb').onclick=showLog;
+$('#dl').onclick=async()=>{
+ if(!pdfBytes)return toast('Əvvəl kompilyasiya edin');
+ const f=new File([pdfBytes],'main.pdf',{type:'application/pdf'});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});return}}catch(e){}
+ const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download='main.pdf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),20000);
+};
+$('#cfg').onclick=()=>{
+ sheet('<h3>Ayarlar</h3><label>TeX Live paket serveri (ünvan)</label><input type="text" id="ep" value="'+esc(S.ep)+'"><label>Keçid sayı (məzmun və istinadlar üçün 2 kifayətdir)</label><select id="ps"><option>1</option><option>2</option><option>3</option></select><label><input type="checkbox" id="cm"> Uyğunluq rejimi: DejaVu Serif (gürcü + Azərbaycan hərfləri), newcomputermodern və babel azerbaijani avtomatik əvəz olunur</label><div class="row"><button id="rs" class="d">Layihəni sıfırla</button><button class="p" id="ok">Saxla</button></div>');
+ $('#ps').value=S.passes;$('#cm').checked=S.compat;
+ $('#ok').onclick=()=>{S.ep=$('#ep').value.trim()||'https://texlive2.swiftlatex.com/';S.passes=+$('#ps').value;S.compat=$('#cm').checked;save();closeSheet()};
+ $('#rs').onclick=()=>{if(confirm('Bütün fayllar silinsin?')){indexedDB.deleteDatabase('texstudio');location.reload()}};
+};
+(async()=>{
+ const x=await idbGet('S');if(x&&x.files&&x.files.length)S=Object.assign(S,x);
+ mode(S.m||'split');open(Math.min(S.a||0,S.files.length-1));
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body></html>
